@@ -1,6 +1,5 @@
-# BearHack - Team BearMax Project (we can change the title later)
+# [PROJECT NAME]
+Authors: [Bryan Wong](https://github.com/byranne), Josh, Matthew, Dana, [Jemaima Roie Ceralde](https://github.com/jaeceralde),
 
-[project description here]
-
-
-Contributors: ... (I dont know if we need to include this section but Ill just put this here for now)
+## Project Description
+DESCRIBE PROJECT HERE
