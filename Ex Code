@@ -1,0 +1,92 @@
+#include <Servo.h>
+#include <DHT.h>
+
+#define DHT_PIN 2          // Pin connected to DHT11 sensor
+#define DHT_TYPE DHT11     // Type of DHT sensor
+#define MOTOR_PIN_ENABLE 3 // Motor driver enable pin (PWM)
+#define MOTOR_PIN_1 5      // Motor driver IN1 pin
+#define MOTOR_PIN_2 6      // Motor driver IN2 pin
+#define TEMP_SENSOR_PIN A0 // LM35 sensor connected to analog pin A0
+#define LED_PIN 13         // LED connected to pin 13
+#define BUTTON_PIN 2       // Button connected to pin 2
+#define SERVO_PIN 9        // Servo motor connected to pin 9
+
+// Create the DHT sensor object
+DHT dht(DHT_PIN, DHT_TYPE);
+
+class BreadboardController {
+private:
+    Servo myServo;  // Create Servo object
+
+public:
+    BreadboardController() {
+        // Constructor to initialize things like sensor, motor, and servo
+        dht.begin();
+    }
+
+    void blinkLED(int pin, int delayTime) {
+        digitalWrite(pin, HIGH);  // Turn the LED on
+        delay(delayTime);         // Wait for the specified delay time
+        digitalWrite(pin, LOW);   // Turn the LED off
+        delay(delayTime);         // Wait for the specified delay time
+    }
+
+    bool readButtonState(int pin) {
+        return digitalRead(pin) == HIGH;  // Return true if the button is pressed
+    }
+
+    void setMotorSpeed(int enablePin, int motorPin1, int motorPin2, int speed) {
+        analogWrite(enablePin, speed); // Enable motor driver (PWM speed control)
+        digitalWrite(motorPin1, HIGH); // Set motor direction
+        digitalWrite(motorPin2, LOW);  // Set motor direction
+    }
+
+    float readTemperature(int pin) {
+        int sensorValue = analogRead(pin);  // Read the analog value from the sensor
+        float voltage = sensorValue * (5.0 / 1023.0);  // Convert to voltage
+        float temperature = voltage * 100.0;  // LM35 outputs 10mV per degree Celsius
+        return temperature;
+    }
+
+    void moveServo(int pin, int angle) {
+        myServo.attach(pin);    // Attach the servo to the specified pin
+        myServo.write(angle);   // Move the servo to the specified angle (0 to 180 degrees)
+    }
+
+    void setupPins() {
+        pinMode(LED_PIN, OUTPUT);    // Set LED pin as output
+        pinMode(BUTTON_PIN, INPUT);  // Set button pin as input
+        pinMode(MOTOR_PIN_ENABLE, OUTPUT); // Motor pin as output
+        pinMode(MOTOR_PIN_1, OUTPUT); // Motor direction pin
+        pinMode(MOTOR_PIN_2, OUTPUT); // Motor direction pin
+        pinMode(SERVO_PIN, OUTPUT);   // Set servo pin as output
+    }
+};
+
+BreadboardController controller;  // Create an instance of the controller class
+
+void setup() {
+    Serial.begin(9600);           // Initialize serial communication for debugging
+    controller.setupPins();       // Initialize pins
+}
+
+void loop() {
+    // Blink the LED
+    controller.blinkLED(LED_PIN, 1000);
+
+    // Read button state and control motor
+    if (controller.readButtonState(BUTTON_PIN)) {
+        controller.setMotorSpeed(MOTOR_PIN_ENABLE, MOTOR_PIN_1, MOTOR_PIN_2, 255);  // Full speed if button is pressed
+    } else {
+        controller.setMotorSpeed(MOTOR_PIN_ENABLE, MOTOR_PIN_1, MOTOR_PIN_2, 0);    // Stop motor if button is not pressed
+    }
+
+    // Read and print temperature from LM35
+    float temperature = controller.readTemperature(TEMP_SENSOR_PIN);
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+
+    // Move the servo motor to 90 degrees
+    controller.moveServo(SERVO_PIN, 90);
+    delay(1000);  // Wait for 1 second
+}
