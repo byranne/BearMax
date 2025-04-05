@@ -13,7 +13,8 @@ class Timer {
         Timer();
         int getStartTime() const;
         int getEndTime() const;
-        int resetTime();
+        void setEndTime(int end);
+        void resetTime();
         int calculateTime();
 };
 
