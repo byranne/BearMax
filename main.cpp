@@ -1,35 +1,78 @@
-#include <IRremote.h>
 #include <LiquidCrystal.h>
 
-IRrecv irrecv(2); //begin reciever at pin 2 (change later)
-decode_results results;
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2); //begin lcd screen and set up at respective pins
+
+enum ButtonState {IDLE, PRESSED, RELEASED};
+enum ButtonState2 {IDLE, PRESSED, RELEASED};
+ButtonState buttonState = IDLE;
+ButtonState buttonState2 = IDLE;
 
 // basic setup for when device is turned on
 void setup() {
+  const int buttonPin = 10;
+  const int buttonPin2 = 8;
   Serial.begin(9600); //have serial sensor detect baud rate of 9600
   lcd.begin(16, 2); //begin lcd display (16 columns and 2 rows)
-  irrecv.enableIRIn(); //enables IR sensor
-  lcd.print("Device is on!"); //prints when start just to test
+  lcd.setcursor(0,0);
+  lcd.println("Hello World")
+  lcd.print("by BearMax :D")
+  pinMode(buttonPin,INPUT_PULLUP);
+  pinMode(buttonPin2,INPUT_PULLUP);
+
 }
 
-//main loop
-void loop(){
-  //will keep looping until a button is pressed 
-  if (irrecv.decode(&results)) { 
-    unsigned long IRcode = results.value; //store results in variable IRcode
-    Serial.print("Code: ");
-    Serial.println(IRcode, HEX); // print out the code for the button
-    //interpret(IRcode); - will be our main switch function to do things.
-    irrecv.resume(); //starts looking for new readings after done
-  }
+void loop() {
+  static bool lastButtonState = HIGH;
+  static bool lastButtonState2 = HIGH;
+  bool buttonStateNow = digitalRead (buttonPin);
+  bool buttonStateNow2 = digitalRead (buttonPin);
+
+  switch (buttonState) {
+    case IDLE:
+      if (buttonStateNow == LOW && lastButtonState == HIGH){
+        buttonState = PRESSED;
+      }
+      break;
+
+    case PRESSED:
+      if (buttonStateNow == LOW) {
+        buttonState = RELEASED;
+        lcd.print("Button1")
+      }
+      break;
+
+    case RELEASED:
+      if (buttonStateNow == HIGH){
+        buttonState = IDLE; // Ready for next press
+        lcd.clear();
+      }
+      break;
 }
 
-/*void intepret (insigned long IRcode) {
-  switch (Ircode){
-    case <IrCode here>:
-  }
+  switch (buttonState2) {
+    case IDLE:
+      if (buttonStateNow2 == LOW && lastButtonState2 == HIGH){
+        buttonState2 = PRESSED;
+      }
+      break;
 
-}*/
+    case PRESSED:
+      if (buttonStateNow2 == LOW) {
+        buttonState2 = RELEASED;
+        lcd.print("Button2")
+      }
+      break;
+
+    case RELEASED:
+      if (buttonStateNow2 == HIGH){
+        buttonState2 = IDLE; // Ready for next press
+        lcd.clear();
+      }
+      break;
+}
+
+lastButtonState = buttonStateNow;
+lastButtonState2 = buttonStateNow2;
+}
 
 
