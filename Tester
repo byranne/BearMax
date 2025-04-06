@@ -38,7 +38,7 @@ void loop() {
   // First Button
   switch (buttonState) {
     case IDLE:
-      if (buttonStateNow == LOW && lastButtonState == HIGH) {
+      if (buttonStateNow == HIGH && lastButtonState == LOW) {
         buttonState = PRESSED;
       }
       break;
@@ -47,7 +47,7 @@ void loop() {
         buttonState = RELEASED;
         // Checks max volt
         if(currVolt == maxVolt) {
-          lcd.print("reached max");
+          lcd.print(" reached max");
           currVolt = 500;
           delay(2000);
           lcd.clear();
@@ -75,7 +75,7 @@ void loop() {
   // Second Button
   switch (buttonState2) {
     case IDLE:
-      if (buttonStateNow2 == LOW && lastButtonState2 == HIGH) {
+      if (buttonStateNow2 == HIGH && lastButtonState2 == LOW) {
         buttonState2 = PRESSED;
       }
       break;
@@ -84,7 +84,7 @@ void loop() {
         buttonState2 = RELEASED;
         // Checks max volt
         if(currVolt == 0) {
-          lcd.print("reached min");
+          lcd.print(" reached min");
           currVolt = 0;
           delay(2000);
           lcd.clear();
