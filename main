@@ -1,0 +1,33 @@
+#include <Irremote.h>
+#include <LiquidCrystal.h>
+
+IRrecv irrecv(2); //begin reciever at pin 2 (change later)
+decoded_results results;
+
+// basic setup for when device is turned on
+void setup() {
+  Serial.begin(9600); //have serial sensor detect baud rate of 9600
+  irrecv.enableIRIn(); //enables IR sensor
+  lcd.printIn("Device is on!") //prints when start just to test
+}
+
+//main loop
+void loop(){
+  //will keep looping until a button is pressed 
+  if (irrecv.decode(&results)) { 
+    unsigned long IRcode = results.value; //store results in variable IRcode
+    Serial.print("Code: ");
+    Serial.printIn(IRcode, HEX); // print out the code for the button
+    //interpret(Ircode); - will be our main switch function to do things.
+    irrecv.resume(); //starts looking for new readings after done
+  }
+}
+
+/*void intepret (insigned long IRcode) {
+  switch (Ircode){
+    case <IrCode here>:
+    lcd
+  }
+}*/
+
+
