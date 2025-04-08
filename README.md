@@ -22,13 +22,13 @@ The main idea was to recreate what commercial blood agitators do, but with way m
 Access to safe blood shouldn’t depend on whether a hospital can afford a piece of equipment. By building a low-cost alternative to a device that plays such a key role in donation safety, we’re hoping to make blood collection more accessible in underserved areas. BearMax is a step toward making that possible.
 
 ## Technologies & Skills learned & used
-- Microcontroller programming (Arduino)
-- 3D Model Design
-- Additive Manufacturing
-- PWM-based motor control
-- Circuit prototyping on breadboard
-- Hardware-software integration
-- Problem-solving in constrained environments
+-Microcontroller programming (Arduino IDE)
+-3D modeling (Fusion 360 & Solidworks)
+-Additive manufacturing (3D printing)
+-PWM-based motor control
+-Circuit design & prototyping (breadboard)
+-Hardware-software integration
+-Designing for real-world constraints
 
 ## About the Project
-This project was built during BearHack, a healthcare-focused hackathon centered around real-world problems. We chose to focus on blood agitators because the problem is very specific, very real, and very solvable. This is one of those cases where thoughtful engineering can actually impact lives.
+This project was built during **BearHack**, a healthcare-focused hackathon centered around designing solutions to real world medical problems. We chose to address this issue because we strongly believe that access to medical care should be a universal right, not a privilege. Just like anyone else, people in underserved contries also deserve reliable access to safe blood. In many situations, having the proper medical equipment can be the difference between life and death. By designing an affordible alternative, we are supporting equitable healthcare around the world.
